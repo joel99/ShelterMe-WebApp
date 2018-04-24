@@ -1,0 +1,119 @@
+{% extends "index.html" %}
+{% block head %}
+{{ myMap.js }}
+{% endblock %}
+{% block banner %}
+<span>
+  {% if shelter %}
+  Shelter: {{ shelter["name"] }}
+  {% else %}
+  Shelter not found
+  {% endif %}
+</span>
+{% endblock %}
+{% block content %}
+<br>
+<div class="row">
+  <h4> Shelter: </h4>
+</div>
+<!-- This thing -->
+{% if isLoggedIn and (canReserve or canCancel) %}
+<div class="row" id="reserveContainer"
+     {% if canReserve %}
+     style="display: block"
+     {% else %}
+     style="display: none"
+     {% endif %}
+>
+  <div class="form-group row">
+    <label for="reserveAmount" class="col-sm-2 col-form-label">Reserve: </label>
+    <div class="col-sm-6">
+      <input type="text" name="amount" class="form-control" id="makeReservationAmount">
+    </div>
+    <div class="col-sm-4">
+      <button class="btn btn-primary" role="submit" id="makeReservationButton">Reserve</button>
+    </div>
+  </div>
+</div>
+<!-- Cancel container -->
+<div class="row" id="cancelContainer"
+     {% if canCancel %}
+     style="display: block"
+     {% else %}
+     style="display: none"
+     {% endif %}
+>
+  <button class="btn btn-warning" id="cancelReservationButton">Cancel Reservation</button>  
+</div>
+
+<div class="row" id="feedbackContainer">  
+</div>
+
+{% elif isLoggedIn and committed %}
+<div class="row">
+  <h4> You already have a reservation </h4>
+</div>
+{% else %}
+<div class="row">
+  <h4> Login to make reservations </h4>
+</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-sm">
+    <a class="custom-link" href="/search">
+      <button class="btn btn-default btn-block" id="viewSheltersButton">
+	Back to Shelter Catalog
+      </button>
+    </a>
+  </div>
+</div>
+<div class="row">
+  <h4> Shelter Details </h4>
+</div>
+<div>
+  {% if shelter %}
+  <ul class="list-group">
+    <li class="list-group-item">
+      Name: {{ shelter["name"] }}
+    </li>
+    <li class="list-group-item">
+      Capacity Remaining:
+      <span id="capacity">
+	{{ shelter["capacity"] }}
+      </span>
+    </li>    
+    <li class="list-group-item">
+      Restrictions: {{ shelter["restrictions"] }}
+    </li>
+    <li class="list-group-item">
+      Longitude: {{ shelter["longitude"] }}
+    </li>
+    <li class="list-group-item">
+      Latitude: {{ shelter["latitude"] }}
+    </li>
+    <li class="list-group-item">
+      Address: {{ shelter["address"] }}
+    </li>
+    <li class="list-group-item">
+      Notes: {{ shelter["notes"] }}
+    </li>
+    <li class="list-group-item">
+      Phone: {{ shelter["phone"] }}
+    </li>
+  </ul>
+  <div>
+    {{myMap.html}}
+  </div>
+  {% else %}
+  <h4>
+    Shelter details not available
+  </h4>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/shelters.js"></script>
+{% endblock %}

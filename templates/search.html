@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% block head %}
+{{ myMap.js }}
+{% endblock %}
+
+{% block banner %}
+<span>Shelters</span>
+{% endblock %}
+{% block content %}
+<br>
+<div class="row">
+  <h4> Search Shelters </h4>
+</div>
+<div class="row">
+  <form id="search-form" method="get">
+    <div class="form-group row">
+      <label for="shelterName" class="col-sm-4">Shelter Name: </label>
+      <input type="text" class="form-control col-sm-8" id="shelterName" name="searchName">
+    </div>
+    <div class="form-group row">
+      <label for="genderChoice"
+	     class="col-form-label col-form-label-sm col-sm-4 pt-0">Gender</label>
+      <select class="form-control form-control-sm col-sm-8" name="genderChoice">
+	<option>Male</option>
+	<option>Female</option>
+	<option>Unspecified</option>
+      </select>
+    </div>
+    <label for="ageChoice"
+	   class="col-form-label col-form-label-sm col-sm-4 pt-0">Age Group</label>
+    <div class="form-group row">
+      <select class="form-control form-control-sm col-sm-8" name="ageChoice">
+	<option>Families with Newborns</option>
+	<option>Children</option>
+	<option>Young Adults</option>
+	<option>Anyone</option>
+	<option>Unspecified</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="search-submit">Search</button>
+  </form>
+  <!-- TODO: search bar -->
+</div>
+<div class="row">
+  <h4> Shelter List </h4>
+</div>
+<div>
+  {% if shelterResults|length == 0 %}
+  <h3> No matching shelters found. </h3>
+  {% else %}
+  <ul class="list-group">
+    {% for i in range(0, shelterResults|length) %}
+    <li class="list-group-item">
+      <a href={{"/shelter/" + shelterResults[i]["id"]}}>
+	{{shelterResults[i]["name"]}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+<div>
+  {{myMap.html}}
+</div>
+{% endblock %}
